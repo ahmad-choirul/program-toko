@@ -2,6 +2,7 @@ package model;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import java.math.BigInteger;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,5 +69,13 @@ public class koneksi {
             table.addRow(row);
         }
         return table;
+    }
+     public String getdataidNoaray(String query) throws SQLException {
+        ResultSet rs = getResult(query);
+        String data = "";
+       if( rs.next()) {
+            data = rs.getString(1);
+        }
+        return data;
     }
 }

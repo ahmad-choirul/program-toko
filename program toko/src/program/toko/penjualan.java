@@ -5,13 +5,25 @@
  */
 package program.toko;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.mbarang;
+import model.mpenjualan;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Scanner;
+import javax.swing.JTable;
 
 /**
  *
@@ -22,17 +34,21 @@ public class penjualan extends javax.swing.JInternalFrame {
     /**
      * Creates new form penjualan
      */
-    model.mbarang modelbarang;
-    model.mpenjualan modelpenjualan;
+    mbarang modelbarang;
+    mpenjualan modelpenjualan;
     ArrayList<String> daftarkode = new ArrayList<String>();
+    double totalharga = 0;
+    String[] colomname = {"kd_barang_", "nama", "harga", "quantity", "total"};
+    JTable tabelsimpan = new JTable(0, 5);
 
     public penjualan() {
+
         try {
             initComponents();
-            kd_barang.requestFocus();
-            modelbarang = new model.mbarang();
-            refrestable();
-
+            kd_barang.requestFocusInWindow();
+            modelbarang = new mbarang();
+            modelpenjualan = new mpenjualan();
+            ubahquantity.setMnemonic(KeyEvent.VK_U);
         } catch (SQLException ex) {
             Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -48,23 +64,48 @@ public class penjualan extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         kd_barang = new javax.swing.JTextField();
+        simpancetak = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        simpan = new javax.swing.JButton();
+        boxtotal1 = new javax.swing.JTextField();
+        boxtotal = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        databaru = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        boxbayar = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        boxkembalian = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cari = new javax.swing.JButton();
+        ubahquantity = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        kd_barang.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         kd_barang.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 kd_barangKeyPressed(evt);
             }
         });
+        getContentPane().add(kd_barang, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 195, 42));
+
+        simpancetak.setText("cetak dan simpan");
+        simpancetak.setEnabled(false);
+        simpancetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpancetakActionPerformed(evt);
+            }
+        });
+        getContentPane().add(simpancetak, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 430, 120, 80));
 
         jLabel1.setText("kode barang");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 24));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -74,46 +115,84 @@ public class penjualan extends javax.swing.JInternalFrame {
                 "kd_barang", "nama", "harga", "quantity", "total"
             }
         ));
-        jScrollPane1.setViewportView(table);
-
-        jButton1.setText("simpan");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tableKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tableKeyReleased(evt);
             }
         });
+        jScrollPane1.setViewportView(table);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel1)
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(kd_barang, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(110, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(kd_barang, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 730, 330));
+
+        simpan.setText("simpan");
+        simpan.setEnabled(false);
+        simpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpanActionPerformed(evt);
+            }
+        });
+        getContentPane().add(simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 90, 71));
+
+        boxtotal1.setEditable(false);
+        boxtotal1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        boxtotal1.setForeground(new java.awt.Color(255, 0, 0));
+        getContentPane().add(boxtotal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, 250, 50));
+
+        boxtotal.setEditable(false);
+        boxtotal.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        boxtotal.setForeground(new java.awt.Color(255, 0, 0));
+        getContentPane().add(boxtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 389, 60));
+
+        jLabel2.setText("total harga");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, -1, -1));
+
+        databaru.setText("data baru");
+        databaru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                databaruActionPerformed(evt);
+            }
+        });
+        getContentPane().add(databaru, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 100, 80));
+
+        jLabel3.setText("total biaya");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 450, -1, -1));
+
+        boxbayar.setEditable(false);
+        boxbayar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        boxbayar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                boxbayarKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                boxbayarKeyReleased(evt);
+            }
+        });
+        getContentPane().add(boxbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 490, 250, 40));
+
+        jLabel4.setText("bayar");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 500, -1, -1));
+
+        boxkembalian.setEditable(false);
+        boxkembalian.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        boxkembalian.setToolTipText("");
+        getContentPane().add(boxkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 550, 250, 40));
+
+        jLabel5.setText("kembalian");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 560, -1, -1));
+
+        cari.setText("cari");
+        getContentPane().add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+
+        ubahquantity.setText("ubah quantity (U)");
+        ubahquantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ubahquantityActionPerformed(evt);
+            }
+        });
+        getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -127,13 +206,18 @@ public class penjualan extends javax.swing.JInternalFrame {
                         String[] data = modelbarang.getdatawithid(kd_barang.getText());
                         String data1 = data[0];
                         String data2 = data[1];
-                        String data3 = data[2];
+                        String data3 = rubahuangkerupiah(Double.parseDouble(data[2]));
+                        double harga = Double.parseDouble(data[2]);
                         String data4 = "1";
-                        double hitung = Integer.parseInt(data3) * Integer.parseInt(data4);
-                        String data5 = "" + hitung;
-                        Object[] row = {data1, data2, data3, data4, data5};
-                        DefaultTableModel model = (DefaultTableModel) table.getModel();
-                        model.addRow(row);
+                        double hitung = harga * Double.parseDouble(data4);
+                        totalharga += hitung;
+                        String data5 = rubahuangkerupiah(hitung);
+                        Object[] rowtampil = {data1, data2, data3, data4, data5};
+                        Object[] rowsimpan = {data1, data2, harga, data4, hitung};
+                        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+                        DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
+                        modeltampil.addRow(rowtampil);
+                        modelsimpan.addRow(rowsimpan);
                         //tambah kodebarang ke array list
                         daftarkode.add(data1);
                     } catch (SQLException ex) {
@@ -147,57 +231,206 @@ public class penjualan extends javax.swing.JInternalFrame {
             }
 
             kd_barang.setText("");
+            boxtotal.setText(rubahuangkerupiah(totalharga));
+            boxtotal1.setText(rubahuangkerupiah(totalharga));
+
+            boxbayar.setEditable(true);
         }
 
     }//GEN-LAST:event_kd_barangKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
+        simpan();
+        clearpenjualan();
+    }//GEN-LAST:event_simpanActionPerformed
+
+    private void simpancetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpancetakActionPerformed
+        simpan();
+        cetak();
+        clearpenjualan();
+    }//GEN-LAST:event_simpancetakActionPerformed
+
+    private void databaruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_databaruActionPerformed
+        clearpenjualan();
+    }//GEN-LAST:event_databaruActionPerformed
+
+    private void boxbayarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxbayarKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && !boxbayar.getText().equals("")) {
+            double uangbayar = Double.parseDouble(boxbayar.getText());
+            if (uangbayar < totalharga) {
+                message("uangkurang");
+            } else {
+//                simpan();
+//clearpenjualan();
+                simpan.setEnabled(true);
+                simpancetak.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_boxbayarKeyPressed
+
+    private void boxbayarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxbayarKeyReleased
         try {
-            simpan();
+
+            if (!boxbayar.getText().equals("")) {
+                double uangbayar = Double.parseDouble(boxbayar.getText());
+                if (uangbayar < totalharga) {
+                    boxkembalian.setBackground(Color.red);
+                    boxkembalian.setText("uang kurang");
+                } else {
+                    boxkembalian.setBackground(Color.green);
+                    double kembalian = uangbayar - totalharga;
+                    boxkembalian.setText("" + kembalian);
+                }
+            }
+        } catch (Exception e) {
+            message("periksa kembali inputan anda");
+            boxbayar.setText("");
+        }
+
+    }//GEN-LAST:event_boxbayarKeyReleased
+
+    private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
+
+    }//GEN-LAST:event_tableKeyPressed
+
+    private void tableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+            int quantity = Integer.parseInt(modeltampil.getValueAt(table.getSelectedRow(), 3).toString());
+            tabelsimpan.setValueAt(quantity, table.getSelectedRow(), 3);
+            table.setValueAt(quantity, table.getSelectedRow(), 3);
+            refrestable();
+        }
+
+    }//GEN-LAST:event_tableKeyReleased
+
+    private void ubahquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahquantityActionPerformed
+        String quantity = JOptionPane.showInputDialog("masukan banyak barang");
+
+        tabelsimpan.setValueAt(quantity, table.getSelectedRow(), 3);
+        table.setValueAt(quantity, table.getSelectedRow(), 3);
+        refrestable();
+    }//GEN-LAST:event_ubahquantityActionPerformed
+    public void clearpenjualan() {
+        DefaultTableModel cleartabeltampil = (DefaultTableModel) table.getModel();
+        cleartabeltampil.setRowCount(0);
+        DefaultTableModel cleartabelsimpan = (DefaultTableModel) tabelsimpan.getModel();
+        cleartabelsimpan.setRowCount(0);
+        daftarkode.clear();
+        kd_barang.setText("");
+        boxtotal.setText("");
+        boxtotal1.setText("");
+        boxbayar.setText("");
+        boxkembalian.setText("");
+        boxbayar.setEditable(false);
+        simpan.setEnabled(false);
+        simpancetak.setEnabled(false);
+        boxkembalian.setBackground(Color.white);
+    }
+
+    public void refrestable() {
+        DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
+        DefaultTableModel modeltampil = (DefaultTableModel) tabelsimpan.getModel();
+        double bayar = 0;
+        for (int i = 0; i < modelsimpan.getRowCount(); i++) {
+            double getharga = Double.parseDouble(modelsimpan.getValueAt(i, 2).toString());
+            System.out.println("baris ke 2" + getharga);
+            double getquantity = Double.parseDouble(modeltampil.getValueAt(i, 3).toString());
+            System.out.println("baris ke 3" + getquantity);
+            double getuang = getharga * getquantity;
+            tabelsimpan.setValueAt(getuang, i, 4);
+            table.setValueAt(rubahuangkerupiah(getuang), i, 4);
+            System.out.println("baris ke 4" + getuang);
+            bayar += getuang;
+        }
+        boxtotal.setText(rubahuangkerupiah(bayar));
+        boxtotal1.setText(rubahuangkerupiah(bayar));
+    }
+public void cetak(){
+        try {
+            MessageFormat header = new MessageFormat("struk no transaksi"+generatenotransaksi());
+            MessageFormat footer = new MessageFormat("tanggal pembelian"+gettanggal());
+            table.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+        } catch (PrinterException ex) {
+            Logger.getLogger(rekap_penjualan.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+    public String rubahuangkerupiah(double uang) {
+        String mataUang = String.format("Rp.%,.0f", uang).replaceAll(",", ".") + ",00";
+        return mataUang;
+    }
+
+    private void simpan() {
+        int jumlah_baris = table.getRowCount();
+        if (jumlah_baris == 0) {
+            message("table masih kosong!");
+        } else {
+            System.out.println("jumlah baris" + jumlah_baris);
+            int i = 0;
+            String[] data = new String[6];
+            data[0] = generatenotransaksi();
+            System.out.println("data 0" + data[0]);
+            while (i < jumlah_baris) {
+                data[1] = "";
+                data[2] = "" + tabelsimpan.getValueAt(i, 0);//kodebarang
+                data[3] = "" + tabelsimpan.getValueAt(i, 2);//harga
+                data[4] = "" + tabelsimpan.getValueAt(i, 3);//quantity
+                data[5] = "" + tabelsimpan.getValueAt(i, 4);//total
+                modelpenjualan.tambahbarang(data);
+                i++;
+            }
+            clearpenjualan();
+            JOptionPane.showMessageDialog(rootPane, "Berhasil Menyimpan!");
+        }
+    }
+
+    public String generatenotransaksi() {
+        String hasil = null;
+        try {
+            String asli = gettanggal() + "000000";
+            StringBuilder rubah = new StringBuilder(asli);
+            String get = modelpenjualan.getnotransaksi();;
+            char[] getarray = get.toCharArray();
+            int count = 0;
+            int countarray = getarray.length - 1;
+            for (int i = asli.length() - 1; count < getarray.length; i--) {
+                rubah.setCharAt(i, getarray[countarray]);
+                countarray--;
+                count++;
+            }
+            hasil = "" + rubah;
         } catch (SQLException ex) {
             Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-    public void refrestable() {
-    }
-
-    private void simpan() throws SQLException {
-        int jumlah_baris = table.getRowCount();
-        
-        if (jumlah_baris == 0) {
-            JOptionPane.showMessageDialog(rootPane, "Table Masih Kosong!");
-        } else {
-            System.out.println("jumlah baris"+jumlah_baris);
-            
-                int i = 0;
-                String[] data = new String[6];
-                data[0] = modelpenjualan.getnotransaksi();
-                while (i < jumlah_baris) {
-                    data[1] = "";
-                    data[2] = (String) table.getValueAt(i, 0);//kodebarang
-                    data[3] = (String) table.getValueAt(i, 2);//harga
-                    data[4] = (String) table.getValueAt(i, 3);//quantity
-                    data[5] = (String) table.getValueAt(i, 5);//total
-                    modelpenjualan.tambahbarang(data);
-                    for (int j = 0; j < data.length; j++) {
-                        System.out.println("data ke " + i + " = " + data[j]);
-                    }
-                    i++;
-                }
-                JOptionPane.showMessageDialog(rootPane, "Berhasil Menyimpan!");
-            
-        }
+        return hasil;
     }
 
     public void message(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
 
+    public String gettanggal() {
+        DateFormat dateformat = new SimpleDateFormat("yyMMdd");
+        Date date = new Date();
+        return dateformat.format(date);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField boxbayar;
+    private javax.swing.JTextField boxkembalian;
+    private javax.swing.JTextField boxtotal;
+    private javax.swing.JTextField boxtotal1;
+    private javax.swing.JButton cari;
+    private javax.swing.JButton databaru;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField kd_barang;
+    private javax.swing.JButton simpan;
+    private javax.swing.JButton simpancetak;
     private javax.swing.JTable table;
+    private javax.swing.JButton ubahquantity;
     // End of variables declaration//GEN-END:variables
 }

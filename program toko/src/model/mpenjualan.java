@@ -14,25 +14,15 @@ import javax.swing.table.DefaultTableModel;
  * @author acer
  */
 public class mpenjualan extends koneksi {
-
-    koneksi con;
-
-    public mpenjualan() throws SQLException {
-        con = new koneksi();
+   public mpenjualan() throws SQLException {
+        super();
     }
 
-    public String getdataidNoaray(String query) throws SQLException {
-        ResultSet rs = con.getResult(query);
-        String data = "";
-        if (rs.next()) {
-            data = rs.getString(0);
-        }
-        return data;
-    }
+   
 //    
     public boolean tambahbarang(String data[]) {
         String query = "INSERT INTO `penjualan` (`no_transaksi`, `tgl_transaksi`, `kd_barang`, `harga`, `jumlah`, `totalharga`) "
-                + "VALUES ('"+data[0]+"', CURRENT_DATE, '"+data[2]+"', '"+data[3]+"', '"+data[4]+"', '"+data[5]+"')";
+                + "VALUES ('"+data[0]+"', CURRENT_TIMESTAMP, '"+data[2]+"', '"+data[3]+"', '"+data[4]+"', '"+data[5]+"')";
         return execute(query);
     }
 //    public boolean updatebarang(String data[]) {
@@ -45,11 +35,12 @@ public class mpenjualan extends koneksi {
 //        return execute(query);
 //    }
 //   
-//     public DefaultTableModel getdata() throws SQLException {
-//        String kolom[] = {"kd_barang","nama barang","harga","stok","keterangan"};
-//        String query = "SELECT * FROM `barang` ";
-//        return getDatatotal(query, kolom);
-//    }
+     public DefaultTableModel getdatapenjualantgl(String tglawal,String tglakhir) throws SQLException {
+        String kolom[] = {"no_transaksi","tgl_transaksi","kd_barang","harga","jumlah","totalharga"};
+        String query = "SELECT * FROM penjualan  WHERE tgl_transaksi between '"+tglawal+"' AND '"+tglakhir+"' ";
+         System.out.println("query"+query);
+        return getDatatotal(query, kolom);
+    }
 //     public String[] getdatawithid(String kodebarang) throws SQLException {
 //        String kolom[] = {"kd_barang","nama barang","harga","stok","keterangan"};
 //        String query = "SELECT * FROM `barang` where kd_barang = '"+kodebarang+"' ";
@@ -65,7 +56,9 @@ public class mpenjualan extends koneksi {
 
     public String getnotransaksi() throws SQLException {
 
-        String query = "SELECT MAX(no_transaksi)+1 from penjualan";
-        return getdataidNoaray(query);
+        String query = "SELECT MAX(no_transaksi)+1 as kode from penjualan";
+        String id = getdataidNoaray(query);
+        String notr=id.substring(6, 12);
+        return notr;
     }
 }
