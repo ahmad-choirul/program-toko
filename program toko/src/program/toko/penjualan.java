@@ -21,9 +21,16 @@ import model.mpenjualan;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 import javax.swing.JTable;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -80,6 +87,7 @@ public class penjualan extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         cari = new javax.swing.JButton();
         ubahquantity = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -194,6 +202,14 @@ public class penjualan extends javax.swing.JInternalFrame {
         });
         getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -210,7 +226,6 @@ public class penjualan extends javax.swing.JInternalFrame {
                         double harga = Double.parseDouble(data[2]);
                         String data4 = "1";
                         double hitung = harga * Double.parseDouble(data4);
-                        totalharga += hitung;
                         String data5 = rubahuangkerupiah(hitung);
                         Object[] rowtampil = {data1, data2, data3, data4, data5};
                         Object[] rowsimpan = {data1, data2, harga, data4, hitung};
@@ -224,7 +239,14 @@ public class penjualan extends javax.swing.JInternalFrame {
                         Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-                    message("data duplikat");
+                    for (int i = 0; i < table.getRowCount(); i++) {
+                        if ((""+table.getValueAt(i, 0)).equalsIgnoreCase(""+kd_barang.getText())) {
+                            int quantity = Integer.parseInt(""+table.getValueAt(i, 3))+1;
+                            table.setValueAt(quantity,i, 3);
+                            tabelsimpan.setValueAt(quantity,i, 3);
+                            break;
+                        }
+                    }
                 }
             } else {
                 message("data tidak di temukan");
@@ -236,7 +258,7 @@ public class penjualan extends javax.swing.JInternalFrame {
 
             boxbayar.setEditable(true);
         }
-
+        refrestable();
     }//GEN-LAST:event_kd_barangKeyPressed
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
@@ -260,8 +282,9 @@ public class penjualan extends javax.swing.JInternalFrame {
             if (uangbayar < totalharga) {
                 message("uangkurang");
             } else {
-//                simpan();
-//clearpenjualan();
+                popup a = new popup(rubahuangkerupiah(Double.parseDouble(boxkembalian.getText())));
+                simpan();
+clearpenjualan();
                 simpan.setEnabled(true);
                 simpancetak.setEnabled(true);
             }
@@ -311,6 +334,24 @@ public class penjualan extends javax.swing.JInternalFrame {
         table.setValueAt(quantity, table.getSelectedRow(), 3);
         refrestable();
     }//GEN-LAST:event_ubahquantityActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+        DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
+        int row = table.getSelectedRow();
+        if (table.getSelectedRow() == -1) {
+            message("pilih data yang akan di hapus");
+        } else {
+                int ok = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                if (ok == 0) {
+                    String getkodebarang = "" + table.getValueAt(row, 0);
+                    daftarkode.remove(getkodebarang);
+                    modeltampil.removeRow(row);
+                    modelsimpan.removeRow(row);
+            }
+        }
+        refrestable();
+    }//GEN-LAST:event_jButton1ActionPerformed
     public void clearpenjualan() {
         DefaultTableModel cleartabeltampil = (DefaultTableModel) table.getModel();
         cleartabeltampil.setRowCount(0);
@@ -343,18 +384,26 @@ public class penjualan extends javax.swing.JInternalFrame {
             System.out.println("baris ke 4" + getuang);
             bayar += getuang;
         }
+        totalharga=bayar;
         boxtotal.setText(rubahuangkerupiah(bayar));
         boxtotal1.setText(rubahuangkerupiah(bayar));
     }
-public void cetak(){
+
+    public void cetak() {
         try {
-            MessageFormat header = new MessageFormat("struk no transaksi"+generatenotransaksi());
-            MessageFormat footer = new MessageFormat("tanggal pembelian"+gettanggal());
-            table.print(JTable.PrintMode.FIT_WIDTH,header,footer);
+            MessageFormat header = new MessageFormat("struk no transaksi" + generatenotransaksi());
+            MessageFormat footer = new MessageFormat("tanggal pembelian" + gettanggal());
+            table.print(JTable.PrintMode.FIT_WIDTH, header, footer);
         } catch (PrinterException ex) {
             Logger.getLogger(rekap_penjualan.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
+
+//Map params = new HashMap();
+//    JRDataSource datasource = new JRTableModelDataSource(table.getModel());
+//    JasperPrint print = JasperFillManager.fillReport(inputStream, params,datasource);
+//    JasperViewer.viewReport(print,true);
+    }
+
     public String rubahuangkerupiah(double uang) {
         String mataUang = String.format("Rp.%,.0f", uang).replaceAll(",", ".") + ",00";
         return mataUang;
@@ -380,7 +429,6 @@ public void cetak(){
                 i++;
             }
             clearpenjualan();
-            JOptionPane.showMessageDialog(rootPane, "Berhasil Menyimpan!");
         }
     }
 
@@ -421,6 +469,7 @@ public void cetak(){
     private javax.swing.JTextField boxtotal1;
     private javax.swing.JButton cari;
     private javax.swing.JButton databaru;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
