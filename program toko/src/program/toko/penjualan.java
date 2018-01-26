@@ -7,7 +7,10 @@ package program.toko;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
@@ -25,6 +28,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.Sides;
+import javax.swing.JEditorPane;
 import javax.swing.JTable;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -47,6 +55,8 @@ public class penjualan extends javax.swing.JInternalFrame {
     double totalharga = 0;
     String[] colomname = {"kd_barang_", "nama", "harga", "quantity", "total"};
     JTable tabelsimpan = new JTable(0, 5);
+    static MessageFormat head = new MessageFormat("");
+    static MessageFormat foot = new MessageFormat("");
 
     public penjualan() {
 
@@ -240,10 +250,10 @@ public class penjualan extends javax.swing.JInternalFrame {
                     }
                 } else {
                     for (int i = 0; i < table.getRowCount(); i++) {
-                        if ((""+table.getValueAt(i, 0)).equalsIgnoreCase(""+kd_barang.getText())) {
-                            int quantity = Integer.parseInt(""+table.getValueAt(i, 3))+1;
-                            table.setValueAt(quantity,i, 3);
-                            tabelsimpan.setValueAt(quantity,i, 3);
+                        if (("" + table.getValueAt(i, 0)).equalsIgnoreCase("" + kd_barang.getText())) {
+                            int quantity = Integer.parseInt("" + table.getValueAt(i, 3)) + 1;
+                            table.setValueAt(quantity, i, 3);
+                            tabelsimpan.setValueAt(quantity, i, 3);
                             break;
                         }
                     }
@@ -284,7 +294,8 @@ public class penjualan extends javax.swing.JInternalFrame {
             } else {
                 popup a = new popup(rubahuangkerupiah(Double.parseDouble(boxkembalian.getText())));
                 simpan();
-clearpenjualan();
+                cetak();
+                clearpenjualan();
                 simpan.setEnabled(true);
                 simpancetak.setEnabled(true);
             }
@@ -342,12 +353,12 @@ clearpenjualan();
         if (table.getSelectedRow() == -1) {
             message("pilih data yang akan di hapus");
         } else {
-                int ok = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-                if (ok == 0) {
-                    String getkodebarang = "" + table.getValueAt(row, 0);
-                    daftarkode.remove(getkodebarang);
-                    modeltampil.removeRow(row);
-                    modelsimpan.removeRow(row);
+            int ok = JOptionPane.showConfirmDialog(null, "Yakin Mau Hapus?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (ok == 0) {
+                String getkodebarang = "" + table.getValueAt(row, 0);
+                daftarkode.remove(getkodebarang);
+                modeltampil.removeRow(row);
+                modelsimpan.removeRow(row);
             }
         }
         refrestable();
@@ -371,7 +382,7 @@ clearpenjualan();
 
     public void refrestable() {
         DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
-        DefaultTableModel modeltampil = (DefaultTableModel) tabelsimpan.getModel();
+        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
         double bayar = 0;
         for (int i = 0; i < modelsimpan.getRowCount(); i++) {
             double getharga = Double.parseDouble(modelsimpan.getValueAt(i, 2).toString());
@@ -384,24 +395,81 @@ clearpenjualan();
             System.out.println("baris ke 4" + getuang);
             bayar += getuang;
         }
-        totalharga=bayar;
+        totalharga = bayar;
         boxtotal.setText(rubahuangkerupiah(bayar));
         boxtotal1.setText(rubahuangkerupiah(bayar));
     }
 
     public void cetak() {
-        try {
-            MessageFormat header = new MessageFormat("struk no transaksi" + generatenotransaksi());
-            MessageFormat footer = new MessageFormat("tanggal pembelian" + gettanggal());
-            table.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-        } catch (PrinterException ex) {
-            Logger.getLogger(rekap_penjualan.class.getName()).log(Level.SEVERE, null, ex);
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        String cetak = "";
+        String get = "";
+        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+        System.out.println("hallo");
+        for (int i = 0; i < modeltampil.getRowCount(); i++) {
+            System.out.println("haloasfagwegwa");
+            get = "<tr> <td>" + modeltampil.getValueAt(i, 1) + "</td>\n <td>" + modeltampil.getValueAt(i, 3) + "</td>\n <td>" + modeltampil.getValueAt(i, 2) + "</td>\n <td>" + modeltampil.getValueAt(i, 4) + "</tr>";
+            System.out.println("get = " + get);
+            String hasil = cetak.concat(get);
+            cetak = hasil;
         }
-
-//Map params = new HashMap();
-//    JRDataSource datasource = new JRTableModelDataSource(table.getModel());
-//    JasperPrint print = JasperFillManager.fillReport(inputStream, params,datasource);
-//    JasperViewer.viewReport(print,true);
+        String hasilcetak = "<p style=\"text-align:left;\">PT Bahagianya Kita (0336-321212)<BR>\n"
+                + "Jl yang pernah ada<BR>\n"
+                + "Jember Selatan<BR>\n"
+                + "NPWP : 1293827384675\n"
+                + "</p>\n"
+                + "<div style=\"border-bottom:2px dashed black;\">\n"
+                + "</div>\n"
+                + "21:05 25-1-2018 Kamis | 051115/Aichi\n"
+                + "<div style=\"border-bottom:2px dashed black;\"></div>\n"
+                + "<table width=\"40%\">\n"
+                + "<tr>\n"
+                + "	<td>Nama</td>\n"
+                + "	<td>Jumlah</td>\n"
+                + "	<td>Harga</td>\n"
+                + "	<td>Total</td>\n"
+                + "</tr>\n"
+                + cetak
+                + "</table>\n"
+                + "<table width=\"40%\">\n"
+                + "<tr>\n"
+                + "	<td>Total bayar</td>\n"
+                + "	<td>" + boxtotal.getText() + "</td>\n"
+                + "</tr>\n"
+                + "<tr>\n"
+                + "	<td>Bayar</td>\n"
+                + "	<td>" + boxbayar.getText() + "</td>\n"
+                + "</tr>\n"
+                + "<tr>\n"
+                + "	<td>Kembalian</td>\n"
+                + "	<td>" + boxkembalian.getText() + "</td>\n"
+                + "</tr>\n"
+                + "</table>\n"
+                + "<hr>\n"
+                + "<p>Terima Kasih Atas Kunjungan Anda <br>\n"
+                + "Periksa barang sebelum dibeli<br>\n"
+                + "Barang yang sudah dibeli tidak bisa dikembalikan</p>";
+        System.out.println("=========" + hasilcetak);
+        PageFormat pf = pj.defaultPage();
+        Paper paper = new Paper();
+        double margin = 20; // half inch
+        paper.setImageableArea(margin, margin - 15, paper.getWidth() - margin * 2, paper.getHeight()
+                - margin * 2);
+        pf.setPaper(paper);;
+        if (pj.printDialog()) {
+            try {
+                JEditorPane text = new JEditorPane("text/html", hasilcetak);
+                text.repaint();
+                pj.setPrintable(text.getPrintable(head, foot), pf);
+                PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+                aset.add(new Copies(1));
+                aset.add(Sides.DUPLEX);
+                pj.print(aset);
+                System.out.println("done .............. ");
+            } catch (PrinterException ex) {
+                Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public String rubahuangkerupiah(double uang) {
@@ -428,7 +496,6 @@ clearpenjualan();
                 modelpenjualan.tambahbarang(data);
                 i++;
             }
-            clearpenjualan();
         }
     }
 
