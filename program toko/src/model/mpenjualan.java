@@ -20,9 +20,14 @@ public class mpenjualan extends koneksi {
 
    
 //    
-    public boolean tambahbarang(String data[]) {
+    public boolean tambahdatapenjualan(String data[]) {
         String query = "INSERT INTO `penjualan` (`no_transaksi`, `tgl_transaksi`, `kd_barang`, `harga`, `jumlah`, `totalharga`) "
                 + "VALUES ('"+data[0]+"', CURRENT_TIMESTAMP, '"+data[2]+"', '"+data[3]+"', '"+data[4]+"', '"+data[5]+"')";
+        return execute(query);
+    }
+    public boolean kurangistokgudang(String stok,String kodebarang) {
+        String query = "UPDATE `barang` SET `stok`=`stok`-"+stok+" WHERE `kd_barang` = '"+kodebarang+"' ";
+        System.out.println("gimana"+query);
         return execute(query);
     }
 //    public boolean updatebarang(String data[]) {

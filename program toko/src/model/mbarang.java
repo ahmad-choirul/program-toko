@@ -53,4 +53,10 @@ public class mbarang extends koneksi {
                 + "or `harga` LIKE '%" + data + "%' or `stok` LIKE '%" + data + "%' or `keterangan` LIKE '%" + data + "%'";
         return getDatatotal(query, kolom);
     }
+    public String getquantity(String kd_barang) throws SQLException {
+
+        String query = "SELECT`stok` from barang WHERE kd_barang = '"+kd_barang+"'";
+        String id = getdataidNoaray(query);
+        return id;
+    }
 }

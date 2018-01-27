@@ -57,6 +57,7 @@ public class penjualan extends javax.swing.JInternalFrame {
     JTable tabelsimpan = new JTable(0, 5);
     static MessageFormat head = new MessageFormat("");
     static MessageFormat foot = new MessageFormat("");
+    int getstokgudang;
 
     public penjualan() {
 
@@ -210,9 +211,9 @@ public class penjualan extends javax.swing.JInternalFrame {
                 ubahquantityActionPerformed(evt);
             }
         });
-        getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
+        getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("hapus");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -225,51 +226,75 @@ public class penjualan extends javax.swing.JInternalFrame {
 
     private void kd_barangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kd_barangKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (modelbarang.cekbarang(kd_barang.getText())) {
-                if (!daftarkode.contains(kd_barang.getText())) {
-                    try {
-                        // TODO add your handling code here:
-                        String[] data = modelbarang.getdatawithid(kd_barang.getText());
-                        String data1 = data[0];
-                        String data2 = data[1];
-                        String data3 = rubahuangkerupiah(Double.parseDouble(data[2]));
-                        double harga = Double.parseDouble(data[2]);
-                        String data4 = "1";
-                        double hitung = harga * Double.parseDouble(data4);
-                        String data5 = rubahuangkerupiah(hitung);
-                        Object[] rowtampil = {data1, data2, data3, data4, data5};
-                        Object[] rowsimpan = {data1, data2, harga, data4, hitung};
-                        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
-                        DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
-                        modeltampil.addRow(rowtampil);
-                        modelsimpan.addRow(rowsimpan);
-                        //tambah kodebarang ke array list
-                        daftarkode.add(data1);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
+            try {
+                getstokgudang = Integer.parseInt(modelbarang.getquantity(kd_barang.getText()));
+                if (getstokgudang == 0) {
+                    JOptionPane.showMessageDialog(this, "stok kurang data tidak ada di db");
+                    kd_barang.setText("");
+                }
+                else {
+                    prosesbarang();
+                    kd_barang.setText("");
+                    boxtotal.setText(rubahuangkerupiah(totalharga));
+                    boxtotal1.setText(rubahuangkerupiah(totalharga));
+                    boxbayar.setEditable(true);}
+                }catch (SQLException ex) {
+                Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+            refrestable();
+    }//GEN-LAST:event_kd_barangKeyPressed
+    
+
+    public void prosesbarang() {
+        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+        DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
+
+        if (modelbarang.cekbarang(kd_barang.getText())) {
+            if (!daftarkode.contains(kd_barang.getText())) {
+                try {
+                    // TODO add your handling code here:
+                    String[] data = modelbarang.getdatawithid(kd_barang.getText());
+                    String data1 = data[0];
+                    String data2 = data[1];
+                    String data3 = rubahuangkerupiah(Double.parseDouble(data[2]));
+                    double harga = Double.parseDouble(data[2]);
+                    String data4 = "1";
+                    double hitung = harga * Double.parseDouble(data4);
+                    String data5 = rubahuangkerupiah(hitung);
+                    Object[] rowtampil = {data1, data2, data3, data4, data5};
+                    Object[] rowsimpan = {data1, data2, harga, data4, hitung};
+                    modeltampil.addRow(rowtampil);
+                    modelsimpan.addRow(rowsimpan);
+                    //tambah kodebarang ke array list
+                    daftarkode.add(data1);
+                } catch (SQLException ex) {
+                    Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    int getstokgudang = Integer.parseInt(modelbarang.getquantity(""+kd_barang.getText()));
                     for (int i = 0; i < table.getRowCount(); i++) {
                         if (("" + table.getValueAt(i, 0)).equalsIgnoreCase("" + kd_barang.getText())) {
                             int quantity = Integer.parseInt("" + table.getValueAt(i, 3)) + 1;
-                            table.setValueAt(quantity, i, 3);
+                            if (quantity<=getstokgudang) {
+                                                            table.setValueAt(quantity, i, 3);
                             tabelsimpan.setValueAt(quantity, i, 3);
-                            break;
+                            }else{
+                                message("stok kurang jika mau tambah");
+                            }
+
                         }
                     }
+                } catch (SQLException ex) {
+                    Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else {
-                message("data tidak di temukan");
             }
+        } else {
+            message("data tidak di temukan");
 
-            kd_barang.setText("");
-            boxtotal.setText(rubahuangkerupiah(totalharga));
-            boxtotal1.setText(rubahuangkerupiah(totalharga));
-
-            boxbayar.setEditable(true);
         }
-        refrestable();
-    }//GEN-LAST:event_kd_barangKeyPressed
+    }
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
         simpan();
@@ -329,10 +354,10 @@ public class penjualan extends javax.swing.JInternalFrame {
 
     private void tableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
-            int quantity = Integer.parseInt(modeltampil.getValueAt(table.getSelectedRow(), 3).toString());
-            tabelsimpan.setValueAt(quantity, table.getSelectedRow(), 3);
-            table.setValueAt(quantity, table.getSelectedRow(), 3);
+//            DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
+//            int quantity = Integer.parseInt(modeltampil.getValueAt(table.getSelectedRow(), 3).toString());
+//            tabelsimpan.setValueAt(quantity, table.getSelectedRow(), 3);
+//            table.setValueAt(quantity, table.getSelectedRow(), 3);
             refrestable();
         }
 
@@ -385,15 +410,26 @@ public class penjualan extends javax.swing.JInternalFrame {
         DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
         double bayar = 0;
         for (int i = 0; i < modelsimpan.getRowCount(); i++) {
-            double getharga = Double.parseDouble(modelsimpan.getValueAt(i, 2).toString());
-            System.out.println("baris ke 2" + getharga);
-            double getquantity = Double.parseDouble(modeltampil.getValueAt(i, 3).toString());
-            System.out.println("baris ke 3" + getquantity);
-            double getuang = getharga * getquantity;
-            tabelsimpan.setValueAt(getuang, i, 4);
-            table.setValueAt(rubahuangkerupiah(getuang), i, 4);
-            System.out.println("baris ke 4" + getuang);
-            bayar += getuang;
+            try {
+                getstokgudang = Integer.parseInt(modelbarang.getquantity(modeltampil.getValueAt(i, 0).toString()));
+                int getquantity = Integer.parseInt(modeltampil.getValueAt(i, 3).toString());//setelah u[date
+                int getquantitysimpan = Integer.parseInt(modelsimpan.getValueAt(i, 3).toString());//sebelum update
+                if (getquantity > getstokgudang) {
+                    JOptionPane.showMessageDialog(this, "stok kurang");
+                    System.out.println("get quantitity simpan" + getquantitysimpan);
+                    table.setValueAt(getquantitysimpan, i, 3);
+                    break;
+                } else {
+                    double getharga = Double.parseDouble(modelsimpan.getValueAt(i, 2).toString());
+                    double getuang = getharga * getquantity;
+                    tabelsimpan.setValueAt(getuang, i, 4);//ganti besar total beli
+                    tabelsimpan.setValueAt(getquantity, i, 3);//ganti quantity
+                    table.setValueAt(rubahuangkerupiah(getuang), i, 4);
+                    bayar += getuang;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         totalharga = bayar;
         boxtotal.setText(rubahuangkerupiah(bayar));
@@ -407,7 +443,6 @@ public class penjualan extends javax.swing.JInternalFrame {
         DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
         System.out.println("hallo");
         for (int i = 0; i < modeltampil.getRowCount(); i++) {
-            System.out.println("haloasfagwegwa");
             get = "<tr> <td>" + modeltampil.getValueAt(i, 1) + "</td>\n <td>" + modeltampil.getValueAt(i, 3) + "</td>\n <td>" + modeltampil.getValueAt(i, 2) + "</td>\n <td>" + modeltampil.getValueAt(i, 4) + "</tr>";
             System.out.println("get = " + get);
             String hasil = cetak.concat(get);
@@ -449,7 +484,6 @@ public class penjualan extends javax.swing.JInternalFrame {
                 + "<p>Terima Kasih Atas Kunjungan Anda <br>\n"
                 + "Periksa barang sebelum dibeli<br>\n"
                 + "Barang yang sudah dibeli tidak bisa dikembalikan</p>";
-        System.out.println("=========" + hasilcetak);
         PageFormat pf = pj.defaultPage();
         Paper paper = new Paper();
         double margin = 20; // half inch
@@ -493,7 +527,8 @@ public class penjualan extends javax.swing.JInternalFrame {
                 data[3] = "" + tabelsimpan.getValueAt(i, 2);//harga
                 data[4] = "" + tabelsimpan.getValueAt(i, 3);//quantity
                 data[5] = "" + tabelsimpan.getValueAt(i, 4);//total
-                modelpenjualan.tambahbarang(data);
+                modelpenjualan.tambahdatapenjualan(data);
+                modelpenjualan.kurangistokgudang(data[4], data[2]);
                 i++;
             }
         }

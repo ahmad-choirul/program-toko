@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public class rekap_penjualan extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form tambahbarang
+     * Creates new form tambahdatapenjualan
      */
     model.mbarang modelbarang;
     model.mpenjualan modelpenjualan;
