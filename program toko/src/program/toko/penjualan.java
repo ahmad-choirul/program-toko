@@ -6,6 +6,7 @@
 package program.toko;
 
 import java.awt.Color;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -23,14 +24,19 @@ import model.mbarang;
 import model.mpenjualan;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import javax.print.PrintService;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PrinterName;
 import javax.print.attribute.standard.Sides;
 import javax.swing.JEditorPane;
 import javax.swing.JTable;
@@ -60,7 +66,7 @@ public class penjualan extends javax.swing.JInternalFrame {
     int getstokgudang;
 
     public penjualan() {
-
+        this.setSize(1, HEIGHT);
         try {
             initComponents();
             kd_barang.requestFocusInWindow();
@@ -121,7 +127,7 @@ public class penjualan extends javax.swing.JInternalFrame {
                 simpancetakActionPerformed(evt);
             }
         });
-        getContentPane().add(simpancetak, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 430, 120, 80));
+        getContentPane().add(simpancetak, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 530, 120, 80));
 
         jLabel1.setText("kode barang");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 24));
@@ -135,16 +141,13 @@ public class penjualan extends javax.swing.JInternalFrame {
             }
         ));
         table.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tableKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tableKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 730, 330));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 1050, 420));
 
         simpan.setText("simpan");
         simpan.setEnabled(false);
@@ -153,20 +156,21 @@ public class penjualan extends javax.swing.JInternalFrame {
                 simpanActionPerformed(evt);
             }
         });
-        getContentPane().add(simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 430, 90, 71));
+        getContentPane().add(simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 531, 110, 80));
 
         boxtotal1.setEditable(false);
         boxtotal1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         boxtotal1.setForeground(new java.awt.Color(255, 0, 0));
-        getContentPane().add(boxtotal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, 250, 50));
+        getContentPane().add(boxtotal1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 250, 250, 50));
 
         boxtotal.setEditable(false);
         boxtotal.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         boxtotal.setForeground(new java.awt.Color(255, 0, 0));
-        getContentPane().add(boxtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 389, 60));
+        getContentPane().add(boxtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(939, 10, 410, 60));
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("total harga");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 30, -1, -1));
 
         databaru.setText("data baru");
         databaru.addActionListener(new java.awt.event.ActionListener() {
@@ -174,10 +178,11 @@ public class penjualan extends javax.swing.JInternalFrame {
                 databaruActionPerformed(evt);
             }
         });
-        getContentPane().add(databaru, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 100, 80));
+        getContentPane().add(databaru, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 100, 80));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setText("total biaya");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 450, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 220, -1, -1));
 
         boxbayar.setEditable(false);
         boxbayar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -189,21 +194,23 @@ public class penjualan extends javax.swing.JInternalFrame {
                 boxbayarKeyReleased(evt);
             }
         });
-        getContentPane().add(boxbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 490, 250, 40));
+        getContentPane().add(boxbayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 340, 250, 50));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("bayar");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 500, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 310, -1, -1));
 
         boxkembalian.setEditable(false);
         boxkembalian.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         boxkembalian.setToolTipText("");
-        getContentPane().add(boxkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 550, 250, 40));
+        getContentPane().add(boxkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 440, 250, 50));
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("kembalian");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 560, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 400, -1, -1));
 
         cari.setText("cari");
-        getContentPane().add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+        getContentPane().add(cari, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 80, 50));
 
         ubahquantity.setText("ubah quantity (U)");
         ubahquantity.addActionListener(new java.awt.event.ActionListener() {
@@ -211,7 +218,7 @@ public class penjualan extends javax.swing.JInternalFrame {
                 ubahquantityActionPerformed(evt);
             }
         });
-        getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+        getContentPane().add(ubahquantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 140, 50));
 
         jButton1.setText("hapus");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +226,7 @@ public class penjualan extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 90, 120, 70));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -231,25 +238,23 @@ public class penjualan extends javax.swing.JInternalFrame {
                 if (getstokgudang == 0) {
                     JOptionPane.showMessageDialog(this, "stok kurang data tidak ada di db");
                     kd_barang.setText("");
-                }
-                else {
+                } else {
                     prosesbarang();
                     kd_barang.setText("");
                     boxtotal.setText(rubahuangkerupiah(totalharga));
                     boxtotal1.setText(rubahuangkerupiah(totalharga));
-                    boxbayar.setEditable(true);}
-                }catch (SQLException ex) {
+                    boxbayar.setEditable(true);
+                }
+            } catch (SQLException ex) {
                 Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
             }
-            }
-            refrestable();
+        }
+        refrestable();
     }//GEN-LAST:event_kd_barangKeyPressed
-    
 
     public void prosesbarang() {
         DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
         DefaultTableModel modelsimpan = (DefaultTableModel) tabelsimpan.getModel();
-
         if (modelbarang.cekbarang(kd_barang.getText())) {
             if (!daftarkode.contains(kd_barang.getText())) {
                 try {
@@ -273,14 +278,14 @@ public class penjualan extends javax.swing.JInternalFrame {
                 }
             } else {
                 try {
-                    int getstokgudang = Integer.parseInt(modelbarang.getquantity(""+kd_barang.getText()));
+                    int getstokgudang = Integer.parseInt(modelbarang.getquantity("" + kd_barang.getText()));
                     for (int i = 0; i < table.getRowCount(); i++) {
                         if (("" + table.getValueAt(i, 0)).equalsIgnoreCase("" + kd_barang.getText())) {
                             int quantity = Integer.parseInt("" + table.getValueAt(i, 3)) + 1;
-                            if (quantity<=getstokgudang) {
-                                                            table.setValueAt(quantity, i, 3);
-                            tabelsimpan.setValueAt(quantity, i, 3);
-                            }else{
+                            if (quantity <= getstokgudang) {
+                                table.setValueAt(quantity, i, 3);
+                                tabelsimpan.setValueAt(quantity, i, 3);
+                            } else {
                                 message("stok kurang jika mau tambah");
                             }
 
@@ -329,7 +334,6 @@ public class penjualan extends javax.swing.JInternalFrame {
 
     private void boxbayarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_boxbayarKeyReleased
         try {
-
             if (!boxbayar.getText().equals("")) {
                 double uangbayar = Double.parseDouble(boxbayar.getText());
                 if (uangbayar < totalharga) {
@@ -348,10 +352,6 @@ public class penjualan extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_boxbayarKeyReleased
 
-    private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
-
-    }//GEN-LAST:event_tableKeyPressed
-
     private void tableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 //            DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
@@ -364,11 +364,15 @@ public class penjualan extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tableKeyReleased
 
     private void ubahquantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahquantityActionPerformed
-        String quantity = JOptionPane.showInputDialog("masukan banyak barang");
+        if (table.getSelectedRow()==-1) {
+            message("pilih barang terlebih dahulu");
+        }else{
+            String quantity = JOptionPane.showInputDialog("masukan banyak barang");
 
         tabelsimpan.setValueAt(quantity, table.getSelectedRow(), 3);
         table.setValueAt(quantity, table.getSelectedRow(), 3);
         refrestable();
+        }
     }//GEN-LAST:event_ubahquantityActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -448,14 +452,14 @@ public class penjualan extends javax.swing.JInternalFrame {
             String hasil = cetak.concat(get);
             cetak = hasil;
         }
-        String hasilcetak = "<p style=\"text-align:left;\">PT Bahagianya Kita (0336-321212)<BR>\n"
+        String hasilcetak = "<p style=\"text-align:left;\">PT apa itu (0336-321212)<BR>\n"
                 + "Jl yang pernah ada<BR>\n"
                 + "Jember Selatan<BR>\n"
                 + "NPWP : 1293827384675\n"
                 + "</p>\n"
                 + "<div style=\"border-bottom:2px dashed black;\">\n"
                 + "</div>\n"
-                + "21:05 25-1-2018 Kamis | 051115/Aichi\n"
+                + "" + getjam() + " " + gettanggal() + " "+Gethari()+" | 051115/Aichi\n"
                 + "<div style=\"border-bottom:2px dashed black;\"></div>\n"
                 + "<table width=\"40%\">\n"
                 + "<tr>\n"
@@ -484,6 +488,7 @@ public class penjualan extends javax.swing.JInternalFrame {
                 + "<p>Terima Kasih Atas Kunjungan Anda <br>\n"
                 + "Periksa barang sebelum dibeli<br>\n"
                 + "Barang yang sudah dibeli tidak bisa dikembalikan</p>";
+        System.out.println("hasil "+hasilcetak);
         PageFormat pf = pj.defaultPage();
         Paper paper = new Paper();
         double margin = 20; // half inch
@@ -563,6 +568,18 @@ public class penjualan extends javax.swing.JInternalFrame {
         DateFormat dateformat = new SimpleDateFormat("yyMMdd");
         Date date = new Date();
         return dateformat.format(date);
+    }
+
+    public String getjam() {
+        String timeStamp = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
+        return timeStamp;
+    }
+
+    public String Gethari() {
+        Date now = new Date();
+        SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE"); // the day of the week abbreviated
+        String hari = simpleDateformat.format(now);
+        return hari;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField boxbayar;
