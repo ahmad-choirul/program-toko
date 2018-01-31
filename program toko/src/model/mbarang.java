@@ -59,4 +59,14 @@ public class mbarang extends koneksi {
         String id = getdataidNoaray(query);
         return id;
     }
+    public boolean hapusbarang(String data) {
+        String query = "delete from barang where kd_barang = " + data;
+        return execute(query);
+    }
+    public DefaultTableModel getdatacaribarangbeli(String data) throws SQLException{
+    String kolom[] = {"kd_barang", "nama barang", "harga", "stok", "keterangan"};
+        String query = "SELECT * FROM `barang` WHERE `kd_barang` LIKE '%" + data + "%' or `nama_barang` LIKE '%" + data + "%' "
+                + "or `harga` LIKE '%" + data + "%' or `stok` LIKE '%" + data + "%' or `keterangan` LIKE '%" + data + "%'";
+        return getDatatotal(query, kolom);
+    }
 }

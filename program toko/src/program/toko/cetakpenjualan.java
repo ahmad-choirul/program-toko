@@ -85,7 +85,6 @@ public class cetakpenjualan {
             aset.add(new Copies(1));
             aset.add(Sides.DUPLEX);
             pj.print(aset);
-            System.out.println("done .............. ");
         }
     }
 

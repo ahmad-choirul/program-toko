@@ -5,10 +5,14 @@
  */
 package program.toko;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -23,7 +27,22 @@ public class mainframekasir extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(this.MAXIMIZED_BOTH); 
     }
+public JDesktopPane intializeDesktop(JDesktopPane mydesktop,String imagePath,int scalx,int scaly) {
 
+        // A specialized layered pane to be used with JInternalFrames
+        mydesktop = new JDesktopPane() {
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image image = icon.getImage();
+
+            Image newimage = image.getScaledInstance(scalx, scaly, Image.SCALE_SMOOTH);
+
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(newimage, 0, 0, this);
+            }
+        };
+        return mydesktop;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,167 +52,149 @@ public class mainframekasir extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dekstop = new javax.swing.JDesktopPane();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        transaksi = new javax.swing.JButton();
+        pembelian = new javax.swing.JButton();
+        laporan = new javax.swing.JButton();
+        exit = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        dekstop = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        penjualan = new javax.swing.JMenu();
-        pembelian = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        tambahbarang = new javax.swing.JMenuItem();
+        menutransaksi = new javax.swing.JMenu();
+        menupembelian = new javax.swing.JMenu();
+        menulaporan = new javax.swing.JMenu();
+        menuexit = new javax.swing.JMenu();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jMenu4.setText("File");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("Edit");
+        jMenuBar2.add(jMenu5);
+
+        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout dekstopLayout = new javax.swing.GroupLayout(dekstop);
-        dekstop.setLayout(dekstopLayout);
-        dekstopLayout.setHorizontalGroup(
-            dekstopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        dekstopLayout.setVerticalGroup(
-            dekstopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 685, Short.MAX_VALUE)
-        );
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("penjualan");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        transaksi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tr1.png"))); // NOI18N
+        transaksi.setMnemonic('n');
+        transaksi.setToolTipText("");
+        transaksi.setBorderPainted(false);
+        transaksi.setContentAreaFilled(false);
+        transaksi.setFocusPainted(false);
+        transaksi.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tr2.png"))); // NOI18N
+        transaksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                transaksiActionPerformed(evt);
             }
         });
+        jPanel1.add(transaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 140, 70));
 
-        jButton2.setText("pembelian");
-        jButton2.setToolTipText("");
-
-        jButton3.setText("tambah data");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        pembelian.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/pm1.png"))); // NOI18N
+        pembelian.setMnemonic('m');
+        pembelian.setBorderPainted(false);
+        pembelian.setContentAreaFilled(false);
+        pembelian.setFocusPainted(false);
+        pembelian.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/pm2.png"))); // NOI18N
+        pembelian.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                pembelianActionPerformed(evt);
             }
         });
+        jPanel1.add(pembelian, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 130, 70));
 
-        jButton4.setText("rekap penjualan");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        laporan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/lp1.png"))); // NOI18N
+        laporan.setMnemonic('l');
+        laporan.setBorderPainted(false);
+        laporan.setContentAreaFilled(false);
+        laporan.setFocusPainted(false);
+        laporan.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/lp2.png"))); // NOI18N
+        laporan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                laporanActionPerformed(evt);
             }
         });
+        jPanel1.add(laporan, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, 138, 70));
 
-        jButton5.setText("exit");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exit1.png"))); // NOI18N
+        exit.setMnemonic('e');
+        exit.setBorderPainted(false);
+        exit.setContentAreaFilled(false);
+        exit.setFocusPainted(false);
+        exit.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/exit2.png"))); // NOI18N
+        exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                exitActionPerformed(evt);
             }
         });
+        jPanel1.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, 150, 70));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 673, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/back1.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(1024, 600));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 80));
 
-        jMenu1.setText("transaksi");
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 70));
 
-        penjualan.setText("penjualan");
-        penjualan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                penjualanActionPerformed(evt);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/back1.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1020, 510));
+
+        dekstop.setBackground(new java.awt.Color(153, 153, 153));
+        dekstop.setLayout(new java.awt.CardLayout());
+        getContentPane().add(dekstop, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1030, 510));
+
+        menutransaksi.setText("transaksi");
+        menutransaksi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menutransaksiMouseClicked(evt);
             }
         });
-        jMenu1.add(penjualan);
+        jMenuBar1.add(menutransaksi);
 
-        pembelian.setText("pembelian");
-        jMenu1.add(pembelian);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("barang");
-
-        tambahbarang.setText("tambah barang");
-        tambahbarang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tambahbarangActionPerformed(evt);
+        menupembelian.setText("pembelian");
+        menupembelian.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menupembelianMouseClicked(evt);
             }
         });
-        jMenu3.add(tambahbarang);
+        jMenuBar1.add(menupembelian);
 
-        jMenuBar1.add(jMenu3);
+        menulaporan.setText("laporan");
+        menulaporan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menulaporanMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(menulaporan);
+
+        menuexit.setText("exit");
+        menuexit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuexitMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(menuexit);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dekstop)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(dekstop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void penjualanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_penjualanActionPerformed
-       
-    }//GEN-LAST:event_penjualanActionPerformed
-
-    private void tambahbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahbarangActionPerformed
-        try {
-            tambahbarang av = new tambahbarang();
-            dekstop.removeAll();
-            dekstop.add(av);
-            av.setMaximum(true);
-            av.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_tambahbarangActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void transaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transaksiActionPerformed
 penjualan av = new penjualan();
         dekstop.removeAll();
         dekstop.add(av);try {
@@ -202,9 +203,9 @@ penjualan av = new penjualan();
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
         }
         av.setVisible(true);    
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_transaksiActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void pembelianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembelianActionPerformed
         try {
             tambahbarang av = new tambahbarang();
             dekstop.removeAll();
@@ -215,15 +216,15 @@ penjualan av = new penjualan();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_pembelianActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
         login a = new login();
         a.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_exitActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void laporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanActionPerformed
           try {
             rekap_penjualan av = new rekap_penjualan();
             dekstop.removeAll();
@@ -234,7 +235,50 @@ penjualan av = new penjualan();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_laporanActionPerformed
+
+    private void menutransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menutransaksiMouseClicked
+        penjualan av = new penjualan();
+        dekstop.removeAll();
+        dekstop.add(av);try {
+            av.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        av.setVisible(true); 
+    }//GEN-LAST:event_menutransaksiMouseClicked
+
+    private void menupembelianMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menupembelianMouseClicked
+               try {
+            tambahbarang av = new tambahbarang();
+            dekstop.removeAll();
+            dekstop.add(av);av.setMaximum(true);
+            av.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menupembelianMouseClicked
+
+    private void menulaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menulaporanMouseClicked
+                  try {
+            rekap_penjualan av = new rekap_penjualan();
+            dekstop.removeAll();
+            dekstop.add(av);av.setMaximum(true);
+            av.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menulaporanMouseClicked
+
+    private void menuexitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuexitMouseClicked
+               login a = new login();
+        a.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_menuexitMouseClicked
 
     /**
      * @param args the command line arguments
@@ -274,18 +318,23 @@ penjualan av = new penjualan();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dekstop;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JButton exit;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JMenu pembelian;
-    private javax.swing.JMenu penjualan;
-    private javax.swing.JMenuItem tambahbarang;
+    private javax.swing.JButton laporan;
+    private javax.swing.JMenu menuexit;
+    private javax.swing.JMenu menulaporan;
+    private javax.swing.JMenu menupembelian;
+    private javax.swing.JMenu menutransaksi;
+    private javax.swing.JButton pembelian;
+    private javax.swing.JButton transaksi;
     // End of variables declaration//GEN-END:variables
 }

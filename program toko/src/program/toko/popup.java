@@ -40,32 +40,39 @@ public class popup extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-        setBackground(new java.awt.Color(51, 255, 51));
+        setBackground(new java.awt.Color(255, 153, 51));
         setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("ok");
+        jButton1.setBackground(new java.awt.Color(255, 153, 102));
+        jButton1.setFont(new java.awt.Font("Cooper Black", 0, 36)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(102, 102, 102));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/ok1.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/ok2.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 102, 44));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 110, 60));
 
-        boxkembalian.setFont(new java.awt.Font("Tahoma", 0, 56)); // NOI18N
-        boxkembalian.setForeground(new java.awt.Color(255, 0, 0));
-        getContentPane().add(boxkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 98, 570, 143));
+        boxkembalian.setFont(new java.awt.Font("Khmer UI", 1, 65)); // NOI18N
+        boxkembalian.setForeground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(boxkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 430, 120));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Futura Md BT", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("kembalian");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(163, 28, 316, 41));
+        jLabel2.setText("Kembalian");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 400, 41));
 
-        backgorunf.setBackground(new java.awt.Color(102, 255, 51));
-        backgorunf.setForeground(new java.awt.Color(51, 255, 51));
-        backgorunf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/bgpopup.png"))); // NOI18N
-        getContentPane().add(backgorunf, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 350));
+        backgorunf.setBackground(new java.awt.Color(255, 153, 0));
+        backgorunf.setForeground(new java.awt.Color(255, 153, 51));
+        backgorunf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/bgorange.png"))); // NOI18N
+        getContentPane().add(backgorunf, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 280));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

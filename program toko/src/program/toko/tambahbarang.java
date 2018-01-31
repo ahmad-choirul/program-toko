@@ -21,7 +21,7 @@ public class tambahbarang extends javax.swing.JInternalFrame {
      * Creates new form tambahbarang
      */
     model.mbarang modelbarang;
-
+String tombol = "simpan";
     public tambahbarang() throws SQLException {
         initComponents();
         modelbarang = new model.mbarang();
@@ -37,7 +37,6 @@ public class tambahbarang extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -55,41 +54,84 @@ public class tambahbarang extends javax.swing.JInternalFrame {
         table = new javax.swing.JTable();
         search = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("tambah barang");
-
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 102, 0));
         jLabel2.setText("kode barang");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 102, 0));
         jLabel3.setText("nama barang");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 102, 0));
         jLabel4.setText("harga");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 102, 0));
         jLabel5.setText("stok");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, -1));
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 102, 0));
         jLabel6.setText("keterangan");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, -1, -1));
+
+        kd_barang.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(kd_barang, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 230, 30));
+
+        nama_barang.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(nama_barang, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 230, 30));
+
+        stok.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(stok, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 230, 30));
+
+        harga.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        getContentPane().add(harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 230, 30));
 
         keterangan.setColumns(20);
+        keterangan.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
         keterangan.setRows(5);
         jScrollPane1.setViewportView(keterangan);
 
-        simpan.setText("simpan");
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, 230, 100));
+
+        simpan.setForeground(new java.awt.Color(255, 255, 255));
+        simpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/sav1.png"))); // NOI18N
+        simpan.setMnemonic('s');
+        simpan.setBorderPainted(false);
+        simpan.setContentAreaFilled(false);
+        simpan.setFocusPainted(false);
+        simpan.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/sav2.png"))); // NOI18N
         simpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simpanActionPerformed(evt);
             }
         });
+        getContentPane().add(simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, -1, -1));
 
-        reset.setText("reset");
+        reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/del1.png"))); // NOI18N
+        reset.setMnemonic('h');
+        reset.setBorderPainted(false);
+        reset.setContentAreaFilled(false);
+        reset.setFocusPainted(false);
+        reset.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/del2.png"))); // NOI18N
         reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetActionPerformed(evt);
             }
         });
+        getContentPane().add(reset, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, -1, -1));
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -109,112 +151,40 @@ public class tambahbarang extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(table);
 
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, 640, 370));
+
+        search.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         search.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchKeyReleased(evt);
             }
         });
+        getContentPane().add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 360, 50));
 
-        jLabel7.setText("cari");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/cari1.png"))); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 70));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(stok, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(53, 53, 53)
-                                    .addComponent(harga))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(nama_barang))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(kd_barang, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(26, 26, 26)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(simpan)
-                        .addGap(46, 46, 46)
-                        .addComponent(reset))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(249, 249, 249)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(48, 48, 48)
-                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(115, 115, 115))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(kd_barang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(nama_barang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(stok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(simpan)
-                    .addComponent(reset))
-                .addGap(92, 92, 92))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(search)
-                    .addComponent(jLabel7))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/back1.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, 650));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        bersih();
-        simpan.setText("simpan");
+        if (table.getSelectedRow() == -1) {
+            bersih();
+            tombol = "simpan";
+        } else {
+            String kdbarang = table.getValueAt(table.getSelectedRow(), 0).toString();
+            modelbarang.hapusbarang(kdbarang);
+            bersih();
+            refrestable();
+        }
     }//GEN-LAST:event_resetActionPerformed
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
-        if (simpan.getText().equalsIgnoreCase("simpan")) {
+        if (tombol.equalsIgnoreCase("simpan")) {
             if (modelbarang.tambahbarang(getdata())) {
                 bersih();
             } else {
@@ -224,11 +194,12 @@ public class tambahbarang extends javax.swing.JInternalFrame {
             if (modelbarang.updatebarang(getdata())) {
                 message("data berhasil di ubah");
                 bersih();
-                
-            }else{
+            } else {
                 message("data gagal di ubah");
             }
-            simpan.setText("simpan");
+            tombol = "simpan";
+            simpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/sav1.png")));
+            simpan.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/sav2.png")));
         }
         refrestable();
     }//GEN-LAST:event_simpanActionPerformed
@@ -251,7 +222,10 @@ public class tambahbarang extends javax.swing.JInternalFrame {
         stok.setText(model.getValueAt(selectindex, 3).toString());
         keterangan.setText(model.getValueAt(selectindex, 4).toString());
 
-        simpan.setText("update");
+        tombol = "update";
+        simpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/up1.png")));
+        simpan.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/up2.png")));
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_tableMouseClicked
     public void bersih() {

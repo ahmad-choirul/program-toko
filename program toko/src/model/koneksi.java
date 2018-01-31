@@ -17,7 +17,6 @@ public class koneksi {
         String url = "jdbc:mysql://localhost/dbtoko"; //url DB
         String username = "root"; //username DB
         String pass = ""; //password DB, Jika tidak di Password silahkan di Kosongkan.
-
         //membuat koneksi ke DB
         this.con = (Connection) DriverManager.getConnection(url, username, pass);
         this.stm = (Statement) this.con.createStatement();

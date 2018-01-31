@@ -35,7 +35,9 @@ public class rekap_penjualan extends javax.swing.JInternalFrame {
         modelpenjualan = new model.mpenjualan();
 
     }
-
+public void lebarkolom(){
+table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,149 +49,121 @@ public class rekap_penjualan extends javax.swing.JInternalFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        search = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         tglawal = new com.toedter.calendar.JDateChooser();
         tglakhir = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         simpan = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "No_transaksi", "tgl transaksi", "nama barang", "harga", "jml", "total harga"
             }
         ));
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableMouseClicked(evt);
-            }
-        });
         jScrollPane2.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(100);
+            table.getColumnModel().getColumn(1).setPreferredWidth(150);
+            table.getColumnModel().getColumn(2).setPreferredWidth(150);
+            table.getColumnModel().getColumn(3).setPreferredWidth(150);
+            table.getColumnModel().getColumn(4).setPreferredWidth(35);
+            table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        }
 
-        search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                searchKeyReleased(evt);
-            }
-        });
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 710, 460));
+        getContentPane().add(tglawal, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 50, 120, 40));
+        getContentPane().add(tglakhir, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 110, 120, 40));
 
-        jLabel7.setText("cari");
-
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 102, 0));
         jLabel8.setText("tanggal awal");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 60, -1, -1));
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 102, 0));
         jLabel9.setText("tanggal akhir");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 110, -1, -1));
 
-        jButton1.setText("set tanggal");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tgl1.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setFocusPainted(false);
+        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tgl2.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 170, -1, -1));
 
-        simpan.setText("print");
+        simpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/print1.png"))); // NOI18N
+        simpan.setBorderPainted(false);
+        simpan.setContentAreaFilled(false);
         simpan.setEnabled(false);
+        simpan.setFocusPainted(false);
+        simpan.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/image/print2.png"))); // NOI18N
         simpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simpanActionPerformed(evt);
             }
         });
+        getContentPane().add(simpan, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 170, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(simpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(80, 80, 80))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tglawal, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addComponent(tglakhir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(59, 59, 59))))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(search))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tglawal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tglakhir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton1)
-                        .addGap(42, 42, 42)
-                        .addComponent(simpan)))
-                .addGap(198, 198, 198))
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 102, 0));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/back1.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, 650));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
-        try {
-            table.setModel(modelbarang.getdatasearch(search.getText()));
-        } catch (SQLException ex) {
-            Logger.getLogger(rekap_penjualan.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_searchKeyReleased
-
-    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
-
-    }//GEN-LAST:event_tableMouseClicked
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        String relation;
         try {
             Date pertama = this.tglawal.getDate();
             Date kedua = this.tglakhir.getDate();
             String tglawal = gettanggal(pertama);
             String tglakhir = gettanggal(kedua);
             if (pertama.equals(kedua)) {
-                table.setModel(modelpenjualan.getdatapenjualantgl(tglawal, tglakhir));
+                JTable gettabel = new JTable();
+                gettabel.setModel(modelpenjualan.getdatapenjualantgl(tglawal, tglakhir));
+                for (int i = 0; i < gettabel.getRowCount(); i++) {
+                    double harga = Double.parseDouble(gettabel.getValueAt(i, 3).toString());
+                    double total = Double.parseDouble(gettabel.getValueAt(i, 5).toString());
+                    String uangharga = rubahuangkerupiah(harga);
+                    String uangtotal = rubahuangkerupiah(total);
+                    gettabel.setValueAt(uangharga, i, 3);
+                    gettabel.setValueAt(uangtotal, i, 5);
+                }
+                table.setModel(gettabel.getModel());
                 simpan.setEnabled(true);
             } else if (pertama.before(kedua)) {
-                table.setModel(modelpenjualan.getdatapenjualantgl(tglawal, tglakhir));
+                JTable gettabel = new JTable();
+                gettabel.setModel(modelpenjualan.getdatapenjualantgl(tglawal, tglakhir));
+                for (int i = 0; i < gettabel.getRowCount(); i++) {
+                    double harga = Double.parseDouble(gettabel.getValueAt(i, 3).toString());
+                    double total = Double.parseDouble(gettabel.getValueAt(i, 5).toString());
+                    String nama = gettabel.getValueAt(i, 2).toString().toUpperCase();
+                    String uangharga = rubahuangkerupiah(harga);
+                    String uangtotal = rubahuangkerupiah(total);
+                    gettabel.setValueAt(nama, i, 2);
+                    gettabel.setValueAt(uangharga, i, 3);
+                    gettabel.setValueAt(uangtotal, i, 5);
+                }
+                table.setModel(gettabel.getModel());
                 simpan.setEnabled(true);
             } else {
                 message("tgl awal harus tidak boleh melebihi tgl akhir");
@@ -197,8 +171,6 @@ public class rekap_penjualan extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(rekap_penjualan.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
@@ -215,17 +187,19 @@ public class rekap_penjualan extends javax.swing.JInternalFrame {
         DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         return dateformat.format(date);
     }
-
+public String rubahuangkerupiah(double uang) {
+        String mataUang = String.format("Rp.%,.0f", uang).replaceAll(",", ".") + ",00";
+        return mataUang;
+    }
     public void message(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField search;
     private javax.swing.JButton simpan;
     private javax.swing.JTable table;
     private com.toedter.calendar.JDateChooser tglakhir;
