@@ -6,14 +6,9 @@
 package program.toko;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.KeyEvent;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.MessageFormat;
@@ -24,30 +19,39 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.mbarang;
 import model.mpenjualan;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
-import javax.print.PrintService;
-import javax.print.attribute.AttributeSet;
-import javax.print.attribute.HashAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.PrinterName;
-import javax.print.attribute.standard.Sides;
-import javax.swing.JEditorPane;
 import javax.swing.JTable;
-import javax.swing.text.StyleConstants;
-import net.sf.jasperreports.engine.JRDataSource;
+import java.util.HashMap;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.*;
+import net.sf.jasperreports.view.*;
+import net.sf.jasperreports.engine.design.*;
+import java.util.*;
+import java.sql.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import model.koneksi;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -67,13 +71,21 @@ public class penjualan extends javax.swing.JInternalFrame {
     static MessageFormat head = new MessageFormat("");
     static MessageFormat foot = new MessageFormat("");
     int getstokgudang;
+    JasperReport jasperReport;
+    JasperDesign jasperDesign;
+    JasperPrint jasperPrint;
+
+    Map<String, Object> param = new HashMap<String, Object>();
+    private static Connection koneksi;
 
     public penjualan() {
         this.setSize(1, HEIGHT);
+
 //            kd_barang.requestFocusInWindow();
 //            kd_barang.requestFocus(true);
         try {
             initComponents();
+            popupkembalian.setVisible(false);
             panelcari.setVisible(false);
             modelbarang = new mbarang();
             modelpenjualan = new mpenjualan();
@@ -91,6 +103,10 @@ public class penjualan extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupkembalian = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        setkembalianpopup = new javax.swing.JLabel();
         panelcari = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         boxcari = new javax.swing.JTextField();
@@ -125,6 +141,38 @@ public class penjualan extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        popupkembalian.setBackground(new java.awt.Color(255, 102, 0));
+        popupkembalian.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.white, java.awt.Color.gray));
+        popupkembalian.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                popupkembalianMouseClicked(evt);
+            }
+        });
+        popupkembalian.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 255, 51));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("kembalian");
+        popupkembalian.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 14, 410, 90));
+
+        jButton5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton5.setText("ok");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        popupkembalian.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 180, 50));
+
+        setkembalianpopup.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 48)); // NOI18N
+        setkembalianpopup.setForeground(new java.awt.Color(255, 255, 255));
+        setkembalianpopup.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        setkembalianpopup.setText("jLabel8");
+        popupkembalian.add(setkembalianpopup, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 430, 60));
+
+        getContentPane().add(popupkembalian, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 570, 260));
 
         panelcari.setBackground(new java.awt.Color(255, 102, 0));
         panelcari.setNextFocusableComponent(kd_barang);
@@ -400,9 +448,10 @@ public class penjualan extends javax.swing.JInternalFrame {
             if (uangbayar < totalharga) {
                 message("uangkurang");
             } else {
-                popup a = new popup(boxkembalian.getText());
                 simpan();
                 cetak();
+                setkembalianpopup.setText(boxkembalian.getText());
+                popupkembalian.setVisible(true);
                 clearpenjualan();
             }
         }
@@ -546,6 +595,16 @@ public class penjualan extends javax.swing.JInternalFrame {
             refrestable();
         }
     }//GEN-LAST:event_tabelcariKeyPressed
+
+    private void popupkembalianMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_popupkembalianMouseClicked
+        popupkembalian.setVisible(false);
+        mainframekasir.setpenjualan();
+    }//GEN-LAST:event_popupkembalianMouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        popupkembalian.setVisible(false);
+        mainframekasir.setpenjualan();
+    }//GEN-LAST:event_jButton5ActionPerformed
     public void clearpenjualan() {
         DefaultTableModel cleartabeltampil = (DefaultTableModel) table.getModel();
         cleartabeltampil.setRowCount(0);
@@ -592,77 +651,45 @@ public class penjualan extends javax.swing.JInternalFrame {
     }
 
     public void cetak() {
-        PrinterJob pj = PrinterJob.getPrinterJob();
-        String cetak = "";
-        String get = "";
-        DefaultTableModel modeltampil = (DefaultTableModel) table.getModel();
-        for (int i = 0; i < modeltampil.getRowCount(); i++) {
-            get = "<tr height='4px'> <td>" + modeltampil.getValueAt(i, 1).toString().toUpperCase() + "</td>\n <td>" + modeltampil.getValueAt(i, 3) + "</td>\n <td>" + modeltampil.getValueAt(i, 2) + "</td>\n <td>" + modeltampil.getValueAt(i, 4) + "</tr>";
-            String hasil = cetak.concat(get);
-            cetak = hasil;
-        }
-        String hasilcetak = "<p style=\"text-align:left;\">PT apa itu (0336-321212)<BR>\n"
-                + "Jl yang pernah ada<BR>\n"
-                + "Jember Selatan<BR>\n"
-                + "NPWP : 1293827384675\n"
-                + "</p>\n"
-                + "" + getjam() + " " + gettanggal() + " " + Gethari() + " |Kasir\n"
-                + "<div style=\"border-bottom:2px dashed black;\"></div>\n"
-                + "<table width=\"35%\">\n"
-                + "<tr height='4px'>\n"
-                + "	<td width='170px'>NAMA</td>\n"
-                + "	<td>JML</td>\n"
-                + "	<td>HARGA</td>\n"
-                + "	<td>TOTAL</td>\n"
-                + "</tr>\n"
-                + cetak
-                + "</table>\n"
-                + "<table width=\"35%\">\n"
-                + "<tr>\n"
-                + "	<td width='170px'>TOTAL BAYAR</td>\n"
-                + "	<td></td>\n"
-                + "	<td></td>\n"
-                + "	<td>" + boxtotal.getText() + "</td>\n"
-                + "</tr>\n"
-                + "<tr>\n"
-                + "	<td>BAYAR</td>\n"
-                + "	<td></td>\n"
-                + "	<td></td>\n"
-                + "	<td>" + rubahuangkerupiah(Double.parseDouble(boxbayar.getText())) + "</td>\n"
-                + "</tr>\n"
-                + "<tr>\n"
-                + "	<td>KEMBALIAN</td>\n"
-                + "	<td></td>\n"
-                + "	<td></td>\n"
-                + "	<td>" + boxkembalian.getText() + "</td>\n"
-                + "</tr>\n"
-                + "</table>\n"
-                + "<p>Terima Kasih Atas Kunjungan Anda <br>\n"
-                + "Periksa barang sebelum dibeli<br>\n"
-                + "Barang yang sudah dibeli tidak bisa dikembalikan</p></font>";
-        PageFormat pf = pj.defaultPage();
-        Paper paper = new Paper();
-        double margin = 20; // half inch
-        paper.setImageableArea(margin, margin - 15, paper.getWidth() - margin * 2, paper.getHeight()
-                - margin * 2);
-        pf.setPaper(paper);;
-        if (pj.printDialog()) {
             try {
-                JEditorPane text = new JEditorPane("text/html", hasilcetak);
-                text.setFont(new Font("segoe UI", Font.BOLD, 7));
-                text.repaint();
-                pj.setPrintable(text.getPrintable(head, foot), pf);
-                PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-                aset.add(new Copies(1));
-                aset.add(Sides.DUPLEX);
-                pj.print(aset);
-            } catch (PrinterException ex) {
-                Logger.getLogger(penjualan.class.getName()).log(Level.SEVERE, null, ex);
+                
+                File file = new File("src/report/penjualan.jrxml");
+                try {
+                    jasperDesign = JRXmlLoader.load(file);
+                    param.clear();
+                    param.put("totalbayar", boxtotal.getText());
+                    param.put("bayar", rubahuangkerupiah(Double.parseDouble(boxbayar.getText())));
+                    param.put("kembalian", boxkembalian.getText());
+                    jasperReport = JasperCompileManager.compileReport(jasperDesign);
+                    jasperPrint = JasperFillManager.fillReport(jasperReport, param, modelbarang.getConnection());
+//                    JasperViewer.viewReport(jasperPrint, false);
+JasperPrintManager.printReport(jasperPrint, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, "Dokumen Tidak Ada" + ex);
+                ex.printStackTrace();
             }
-        }
     }
 
-    public String rubahuangkerupiah(double uang) {
+    public static Connection getKoneksi() {
+        if (koneksi == null) {
+            try {
+                String url = "jdbc:mysql://localhost/dbtoko";
+                String username = "root";
+                String pass = "";
+
+                DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+                koneksi = DriverManager.getConnection(url, username, pass);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        return koneksi;
+    }
+
+    public String rubahuangkerupiah(String uang) {
         String mataUang = String.format("Rp.%,.0f", uang).replaceAll(",", ".") + ",00";
         return mataUang;
     }
@@ -741,16 +768,20 @@ public class penjualan extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField kd_barang;
     private javax.swing.JPanel panelcari;
+    private javax.swing.JPanel popupkembalian;
+    private javax.swing.JLabel setkembalianpopup;
     private javax.swing.JTable tabelcari;
     private javax.swing.JTable table;
     private javax.swing.JButton ubahquantity;

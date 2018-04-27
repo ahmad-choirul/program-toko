@@ -23,11 +23,14 @@ public class mainframekasir extends javax.swing.JFrame {
     /**
      * Creates new form mainframe
      */
+    public static JDesktopPane getdesktop;
     public mainframekasir() {
         initComponents();
-        this.setExtendedState(this.MAXIMIZED_BOTH); 
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        getdesktop=this.dekstop;
     }
-public JDesktopPane intializeDesktop(JDesktopPane mydesktop,String imagePath,int scalx,int scaly) {
+
+    public JDesktopPane intializeDesktop(JDesktopPane mydesktop, String imagePath, int scalx, int scaly) {
 
         // A specialized layered pane to be used with JInternalFrames
         mydesktop = new JDesktopPane() {
@@ -43,6 +46,7 @@ public JDesktopPane intializeDesktop(JDesktopPane mydesktop,String imagePath,int
         };
         return mydesktop;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -195,21 +199,23 @@ public JDesktopPane intializeDesktop(JDesktopPane mydesktop,String imagePath,int
     }// </editor-fold>//GEN-END:initComponents
 
     private void transaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transaksiActionPerformed
-penjualan av = new penjualan();
+        penjualan av = new penjualan();
         dekstop.removeAll();
-        dekstop.add(av);try {
+        dekstop.add(av);
+        try {
             av.setMaximum(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
         }
-        av.setVisible(true);    
+        av.setVisible(true);
     }//GEN-LAST:event_transaksiActionPerformed
 
     private void pembelianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembelianActionPerformed
         try {
             tambahbarang av = new tambahbarang();
             dekstop.removeAll();
-            dekstop.add(av);av.setMaximum(true);
+            dekstop.add(av);
+            av.setMaximum(true);
             av.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,10 +231,11 @@ penjualan av = new penjualan();
     }//GEN-LAST:event_exitActionPerformed
 
     private void laporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanActionPerformed
-          try {
+        try {
             rekap_penjualan av = new rekap_penjualan();
             dekstop.removeAll();
-            dekstop.add(av);av.setMaximum(true);
+            dekstop.add(av);
+            av.setMaximum(true);
             av.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,21 +245,15 @@ penjualan av = new penjualan();
     }//GEN-LAST:event_laporanActionPerformed
 
     private void menutransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menutransaksiMouseClicked
-        penjualan av = new penjualan();
-        dekstop.removeAll();
-        dekstop.add(av);try {
-            av.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        av.setVisible(true); 
+        setpenjualan();
     }//GEN-LAST:event_menutransaksiMouseClicked
 
     private void menupembelianMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menupembelianMouseClicked
-               try {
+        try {
             tambahbarang av = new tambahbarang();
             dekstop.removeAll();
-            dekstop.add(av);av.setMaximum(true);
+            dekstop.add(av);
+            av.setMaximum(true);
             av.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
@@ -262,10 +263,11 @@ penjualan av = new penjualan();
     }//GEN-LAST:event_menupembelianMouseClicked
 
     private void menulaporanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menulaporanMouseClicked
-                  try {
+        try {
             rekap_penjualan av = new rekap_penjualan();
             dekstop.removeAll();
-            dekstop.add(av);av.setMaximum(true);
+            dekstop.add(av);
+            av.setMaximum(true);
             av.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,10 +277,21 @@ penjualan av = new penjualan();
     }//GEN-LAST:event_menulaporanMouseClicked
 
     private void menuexitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuexitMouseClicked
-               login a = new login();
+        login a = new login();
         a.setVisible(true);
         dispose();
     }//GEN-LAST:event_menuexitMouseClicked
+    public static void setpenjualan() {
+        penjualan av = new penjualan();
+        getdesktop.removeAll();
+        getdesktop.add(av);
+        try {
+            av.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(mainframekasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        av.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments

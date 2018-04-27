@@ -12,6 +12,7 @@ public class koneksi {
 
     Connection con;
     Statement stm;
+    java.sql.Connection connection;
 
     public koneksi() throws SQLException {
         String url = "jdbc:mysql://localhost/dbtoko"; //url DB
@@ -20,6 +21,15 @@ public class koneksi {
         //membuat koneksi ke DB
         this.con = (Connection) DriverManager.getConnection(url, username, pass);
         this.stm = (Statement) this.con.createStatement();
+    }
+
+    public java.sql.Connection getConnection() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/dbtoko", "root", "");
+        } catch (Exception e) {
+        }
+        return connection;
     }
 
     //method untuk ekesekusi query Insert, Update, dan Delete
@@ -32,7 +42,7 @@ public class koneksi {
         ResultSet rs = stm.executeQuery(query);
         return rs;
     }
-    
+
     public boolean execute(String query) {
         boolean sukseseksekusi;
         try {
@@ -43,7 +53,7 @@ public class koneksi {
             sukseseksekusi = false;
             System.out.println("query salah");
         }
-        
+
         return sukseseksekusi;
     }
 
@@ -54,9 +64,10 @@ public class koneksi {
                 data[i] = rs.getString(i + 1);
             }
         }
-     
+
         return data;
     }
+
     public DefaultTableModel getDatatotal(String query, String kolom[]) throws SQLException {
         DefaultTableModel table = new DefaultTableModel(null, kolom);
         ResultSet rs = getResult(query);
@@ -69,10 +80,11 @@ public class koneksi {
         }
         return table;
     }
-     public String getdataidNoaray(String query) throws SQLException {
+
+    public String getdataidNoaray(String query) throws SQLException {
         ResultSet rs = getResult(query);
         String data = "";
-       if( rs.next()) {
+        if (rs.next()) {
             data = rs.getString(1);
         }
         return data;
